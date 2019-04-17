@@ -1,0 +1,20 @@
+{
+  "name": "scraping-news",
+  "version": "1.0.0",
+  "description": "A news scraping app that lets users view and leave comments on articles scraped from the internet!",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThorNolan/Scraping-News.git"
+  },
+  "author": "Thor Nolan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThorNolan/Scraping-News/issues"
+  },
+  "homepage": "https://github.com/ThorNolan/Scraping-News#readme"
+}
