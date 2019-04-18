@@ -1,46 +1,57 @@
 //===================== DEPENDENCIES =======================================================================
 
-var express = require("express");
-var logger = require("morgan");
-var mongoose = require("mongoose");
+// Require dependencies
+const express = require("express");
+const exphbs = require('express-handlebars');
+const logger = require("morgan");
+const mongoose = require("mongoose");
 
 // Axios and Cheerio for scraping news headlines from the web
-var axios = require("axios");
-var cheerio = require("cheerio");
+const axios = require("axios");
+const cheerio = require("cheerio");
 
 // Import models from models directory
-var db = require("./models");
+const db = require("./models");
 
 // Set initial port and host and allow port to be set by Heroku
-var PORT = process.env.PORT || 3000;
-var HOST = "0.0.0.0";
+const PORT = process.env.PORT || 3000;
+const HOST = "0.0.0.0";
 
-// Initialize Express.
-var app = express();
+// Initialize Express
+const app = express();
 
 //============ EXPRESS/MIDDLEWARE CONFIGURATION ===============================================================
 
-// Use morgan logger for logging requests
+// Use morgan logger for realtime request logging 
 app.use(logger("dev"));
+
 // Parse request body as JSON
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 // Reveal contents of public directory to the server
 app.use(express.static("public"));
 
+// Tell app to use handlebars and set default page to serve.
+app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
+app.set('view engine', 'handlebars');
+
 // Connect to the Mongo DB and allow for connection to deployed database for Heroku
-var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 //============== ROUTES =========================================================================================
+
+const routes = require('./routes/routes.js');
+app.use(routes);
 
 // A GET route for scraping the echoJS website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with axios
   axios.get("http://www.echojs.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
-    var $ = cheerio.load(response.data);
+    const $ = cheerio.load(response.data);
 
     // Now, we grab every h2 within an article tag, and do the following:
     $("article h2").each(function(i, element) {
