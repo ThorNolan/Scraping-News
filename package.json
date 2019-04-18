@@ -16,5 +16,12 @@
   "bugs": {
     "url": "https://github.com/ThorNolan/Scraping-News/issues"
   },
-  "homepage": "https://github.com/ThorNolan/Scraping-News#readme"
+  "homepage": "https://github.com/ThorNolan/Scraping-News#readme",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "cheerio": "^1.0.0-rc.3",
+    "express": "^4.16.4",
+    "mongoose": "^5.5.2",
+    "morgan": "^1.9.1"
+  }
 }

@@ -4,11 +4,11 @@ var express = require("express");
 var logger = require("morgan");
 var mongoose = require("mongoose");
 
-// Axios and Cheerio for scraping
+// Axios and Cheerio for scraping news headlines from the web
 var axios = require("axios");
 var cheerio = require("cheerio");
 
-// Import models from my models directory
+// Import models from models directory
 var db = require("./models");
 
 // Set initial port and host and allow port to be set by Heroku
@@ -28,8 +28,10 @@ app.use(express.json());
 // Reveal contents of public directory to the server
 app.use(express.static("public"));
 
-// Connect to the Mongo DB
-mongoose.connect("mongodb://localhost/unit18Populater", { useNewUrlParser: true });
+// Connect to the Mongo DB and allow for connection to deployed database for Heroku
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 //============== ROUTES =========================================================================================
 
@@ -72,8 +74,8 @@ app.get("/scrape", function(req, res) {
 
 // Route for getting all Articles from the db
 app.get("/articles", function(req, res) {
-  // TODO: Finish the route so it grabs all of the articles
-  db.Article.find({})
+
+    db.Article.find({})
   .then(function(dbArticle) {
     res.json(dbArticle)
   })
@@ -84,11 +86,7 @@ app.get("/articles", function(req, res) {
 
 // Route for grabbing a specific Article by id, populate it with it's note
 app.get("/articles/:id", function(req, res) {
-  // TODO
-  // ====
-  // Finish the route so it finds one article using the req.params.id,
-  // and run the populate method with "note",
-  // then responds with the article with the note included
+  
   db.Article.findOne({ _id: req.params.id })
   .populate("note")
   .then(function(dbArticle) {

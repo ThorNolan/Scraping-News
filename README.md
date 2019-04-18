@@ -2,7 +2,7 @@ Scraping News
 =============================================
 
 
-![demo gif](INSERT DEMO GIF HERE "demo gif of pass the butter in action")
+![demo gif](INSERT DEMO GIF HERE "Demo gif of the news scraper")
 
 ## 🔑 How to Use the App:
 
