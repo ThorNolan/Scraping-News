@@ -32,7 +32,7 @@ app.use(express.json());
 // Reveal contents of public directory to the server
 app.use(express.static('public'));
 
-// Tell app to use handlebars and set default page to serve.
+// Tell app to use handlebars and set default page to serve
 app.engine('handlebars', exphbs({ defaultLayout: 'main' }));
 app.set('view engine', 'handlebars');
 
@@ -41,10 +41,15 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/mongoHeadlin
 
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
+// Log a message once mongoose connection has been established
+db.once('open', function() {
+    console.log('Successfully connected to database ✔️');
+});
+
 //============== ROUTING =========================================================================================
 
-// Import routes from my routes directory
-const routes = require('./routes/routes.js');
+// Import routes from my routes directory and tell my app to use them
+const routes = require('./controllers/routes.js');
 app.use(routes);
 
 //============ INITIATION ===============================================================================

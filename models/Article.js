@@ -4,25 +4,30 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 // Using the Schema constructor, create a new UserSchema object
-// This is similar to a Sequelize model
 const ArticleSchema = new Schema({
-  // `title` is required and of type String
+  // `title` is a string that is required and unique in my db
   title: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  // `link` is required and of type String
+  // `link` is string that is required and unique
   link: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
-  // `note` is an object that stores a Note id
-  // The ref property links the ObjectId to the Note model
-  // This allows us to populate the Article with an associated Note
-  note: {
+  // `summary` is a string that is required and unique
+  summary: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  // `note` is an array of objects that stores Note id's
+  note: [{
     type: Schema.Types.ObjectId,
-    ref: "Note"
-  }
+    ref: 'Note'
+  }]
 });
 
 // This creates our model from the above schema, using mongoose's model method
