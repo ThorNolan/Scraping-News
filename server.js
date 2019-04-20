@@ -6,7 +6,7 @@ const exphbs = require('express-handlebars');
 const logger = require('morgan');
 const mongoose = require('mongoose');
 
-// Axios and Cheerio for scraping news headlines from the web
+// Axios and Cheerio for scraping news headlines and information
 const axios = require('axios');
 const cheerio = require('cheerio');
 
@@ -42,7 +42,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/mongoHeadlin
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Log a message once mongoose connection has been established
-db.once('open', function() {
+mongoose.connection.once('open', () => {
     console.log('Successfully connected to database ✔️');
 });
 
@@ -55,6 +55,6 @@ app.use(routes);
 //============ INITIATION ===============================================================================
 
 // Start the server
-app.listen(PORT, function() {
-  console.log('🔮 App running on port ' + PORT + '!');
+app.listen(PORT, () => {
+  console.log('🔮  App running on: http://localhost:' + PORT);
 });
