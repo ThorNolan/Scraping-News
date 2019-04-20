@@ -11,6 +11,11 @@ const ArticleSchema = new Schema({
     required: true,
     unique: true
   },
+  // `img` is a string that is required and unique
+  img: {
+    type: String,
+    required: true
+  },
   // `link` is string that is required and unique
   link: {
     type: String,

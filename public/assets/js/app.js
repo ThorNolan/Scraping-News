@@ -7,19 +7,18 @@ $(document).ready(function() {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Display the apropos information on the page
-      $("#articles").append("<p data-id='" + data[i]._id + "'>" + data[i].title + "<br />" + data[i].link + "</p>");
+      $("#scraped-articles").prepend("<div class='result-div'><p class='result-text'><a href='" + data[i].link + "' target='_blank'>" + data[i].title + "</a></p>" + "<br>" + "<p>" + data[i].summary + "</p><button class='create-note btn waves-effect waves-light green darken-1 hvr-icon hvr-icon-bob' data-id='" + data[i]._id + "'><span class='icon'><i class='material-icons valign-center'>add_comment</i></span class='valign-center'>Add Comment</button></div>");
     }
   });
   
-  
-  // Whenever someone clicks a p tag
-  $(document).on("click", "p", function() {
+  // Event handler for create note button for a particular article
+  $(document).on("click", ".create-note", function() {
     // Empty the notes from the note section
     $("#notes").empty();
     // Save the id from the p tag
     var thisId = $(this).attr("data-id");
   
-    // Now make an ajax call for the Article
+    // Make an ajax call for the Article
     $.ajax({
       method: "GET",
       url: "/articles/" + thisId
@@ -29,12 +28,12 @@ $(document).ready(function() {
         console.log(data);
         // The title of the article
         $("#notes").append("<h2>" + data.title + "</h2>");
-        // An input to enter a new title
-        $("#notes").append("<input id='titleinput' name='title' >");
+
         // A textarea to add a new note body
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
+
         // A button to submit a new note, with the id of the article saved to it
-        $("#notes").append("<button data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#notes").append("<button class='btn waves-effect waves-light green darken-1' data-id='" + data._id + "' id='savenote'>Save Note</button>");
   
         // If there's a note in the article
         if (data.note) {

@@ -22,38 +22,52 @@ const router = express.Router();
 
   // A GET route for scraping the onion website for articles
   router.get('/scrape', (req, res) => {
-    // Grab body html with axios
-    axios.get('https://www.theonion.com/').then(function(response) {
+    // Grab body html with axios, used news-in-brief page because of more consistent elements
+    axios.get('https://www.theonion.com/c/news-in-brief').then(response => {
       // Load response into cheerio and store in local variable for a shorthand selector
       const $ = cheerio.load(response.data);
   
       // Now, we grab every h2 within an article tag, and do the following:
-      $("article h2").each(function(i, element) {
+      $('div.item__content').each((i, element) => {
         // Save an empty result object
-        var result = {};
+        const result = {};
   
-        // Add the text and href of every link, and save them as properties of the result object
-        result.title = $(this)
-          .children("a")
+        // Save title as property of result object
+        result.title = $(element)
+          .find('h1')
           .text();
-        result.link = $(this)
-          .children("a")
-          .attr("href");
-  
-        // Create a new Article using the `result` object built from scraping
-        db.Article.create(result)
-          .then(function(dbArticle) {
-            // View the added result in the console
-            console.log(dbArticle);
-          })
-          .catch(function(err) {
-            // If an error occurred, log it
-            console.log(err);
-          });
+
+        // Scraped image
+        result.img = $(element)
+          .find('img-wrapper picture')
+          .children()
+          .first()
+          .attr('data-srcset');
+
+        // Scraped link to the full article  
+        result.link = $(element)
+          .find('.headline a')  
+          .attr('href')
+
+        // Scraped summary of the article
+        result.summary = $(element)
+          .find('.excerpt')
+          .first()
+          .text();
+        
+        // Check to see if an article is already in the database, and will only create a new one if it can't find the title
+        db.Article.update({ title: result.title}, { $set: result}, { upsert: true }).catch(
+            err => res.send(err)
+        );
       });
-  
-      // Send a message to the client
-      res.send("News has been scraped");
+    })
+    .then(() => {
+        // Send all articles to be rendered to the DOM
+        db.Article.find()
+        .then(dbArticles => {
+            res.json(dbArticles);
+        })
+        .catch(err => res.send(err));
     });
   });
   
