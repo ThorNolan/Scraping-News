@@ -14,11 +14,11 @@ This app is very straightforward to use and requires little explanation.
 
 + Press the "Delete Comment" button to delete a comment from the article and database.
    
-+ That's it! Enjoy.
++ That's it!
 
 ## 📁 Deployment Instructions
 
-This app has been deployed to Heroku, and the link can be found [here](DEPLOYED LINK HERE "live link"). If you would like to run the app locally, follow these instructions: 
+This app has been deployed to Heroku, and the link can be found [here](https://safe-bayou-15275.herokuapp.com/ "live link"). If you would like to run the app locally, follow these instructions: 
 
 1. Clone this repository down to your machine.
    

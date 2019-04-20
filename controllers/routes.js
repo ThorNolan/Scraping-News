@@ -10,12 +10,9 @@ const router = express.Router();
 
 //============= HTML ROUTES ====================================================================    
 
+  // Root route to render my index page
   router.get('/', (req, res) => {
     res.render('index');
-  });
-
-  router.get('/saved', (req, res) => {
-      res.render('saved');
   });
 
 //============= API ROUTES ====================================================================    
@@ -27,7 +24,7 @@ const router = express.Router();
       // Load response into cheerio and store in local variable for a shorthand selector
       const $ = cheerio.load(response.data);
   
-      // Now, we grab every h2 within an article tag, and do the following:
+      // Grab every div with the class .item_content
       $('div.item__content').each((i, element) => {
         // Save an empty result object
         const result = {};
@@ -62,20 +59,15 @@ const router = express.Router();
       });
     })
     .then(() => {
-        // Send all articles to be rendered to the DOM
-        db.Article.find()
-        .then(dbArticles => {
-            res.json(dbArticles);
-            res.redirect('/articles');
-        })
-        .catch(err => res.send(err));
+        // Redirect to root route to display the index page
+        res.redirect('/');
     });
   });
   
   // Route for getting all Articles from the db
   router.get("/articles", (req, res) => {
   
-      db.Article.find({})
+    db.Article.find({})
     .then(function(dbArticle) {
       res.json(dbArticle)
     })
@@ -84,7 +76,7 @@ const router = express.Router();
     });
   });
   
-  // Route for grabbing a specific Article by id, populate it with it's note
+  // Route for grabbing a specific Article by id and populating it with it's new note
   router.get("/articles/:id", (req, res) => {
     
     db.Article.findOne({ _id: req.params.id })
@@ -102,7 +94,15 @@ const router = express.Router();
     
     db.Note.create(req.body)
     .then(function(dbNote) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id}, { note: dbNote._id}, { new: true });
+      return db.Article.findOneAndUpdate({
+          _id: req.params.id
+        }, { 
+          note: dbNote._id
+        }, { 
+          safe: true,  
+          new: true, 
+          upsert: true
+        });
     })
     .then(function(dbArticle) {
       res.json(dbArticle);
@@ -110,6 +110,27 @@ const router = express.Router();
     .catch(function(err) {
       res.json(err);
     });
+  });
+
+  router.delete("arcticles/:id/:noteid", function (req, res) {
+      db.Note.findByIdAndRemove(req.params.noteid, function(error, doc) {
+          if (error) {
+              console.log(error);
+          } else {
+              db.Note.findOneAndUpdate({
+                _id: req.params.id
+              }, {
+                 $pull: {
+                    note: doc._id
+                 } 
+              })
+              .exec(function (err, doc) {
+                  if (err) {
+                      console.log(err);
+                  }
+              });
+          };
+      });
   });
 
 // Export router for use from my server  

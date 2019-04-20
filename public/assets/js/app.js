@@ -25,9 +25,16 @@ $(document).ready(function() {
     })
       // With that done, add the note information to the page
       .then(function(data) {
-        console.log(data);
+        // console.log(data);
+
         // The title of the article
         $("#notes").append("<h2>" + data.title + "</h2>");
+
+        // The summary of the article
+        $("#notes").append("<p>" + data.summary + "</p>")
+
+        // Area for displaying notes with a button for deleting them
+        $("#notes").append("<p id='noteArea'></p>")
 
         // A textarea to add a new note body
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
@@ -37,10 +44,9 @@ $(document).ready(function() {
   
         // If there's a note in the article
         if (data.note) {
-          // Place the title of the note in the title input
-          $("#titleinput").val(data.note.title);
           // Place the body of the note in the body textarea
-          $("#bodyinput").val(data.note.body);
+          $("#noteArea").text(data.note.body);
+          $("#noteArea").append("<button id='delete-note' class='btn btn-small waves-effect waves-light'>X</button>")
         }
       });
   });
@@ -55,8 +61,6 @@ $(document).ready(function() {
       method: "POST",
       url: "/articles/" + thisId,
       data: {
-        // Value taken from title input
-        title: $("#titleinput").val(),
         // Value taken from note textarea
         body: $("#bodyinput").val()
       }
