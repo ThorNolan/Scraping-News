@@ -66,6 +66,7 @@ const router = express.Router();
         db.Article.find()
         .then(dbArticles => {
             res.json(dbArticles);
+            res.redirect('/articles');
         })
         .catch(err => res.send(err));
     });

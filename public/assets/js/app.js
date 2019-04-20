@@ -6,8 +6,8 @@ $(document).ready(function() {
   $.getJSON('/articles', function(data) {
     // For each one
     for (var i = 0; i < data.length; i++) {
-      // Display the apropos information on the page
-      $("#scraped-articles").prepend("<div class='result-div'><p class='result-text'><a href='" + data[i].link + "' target='_blank'>" + data[i].title + "</a></p>" + "<br>" + "<p>" + data[i].summary + "</p><button class='create-note btn waves-effect waves-light green darken-1 hvr-icon hvr-icon-bob' data-id='" + data[i]._id + "'><span class='icon'><i class='material-icons valign-center'>add_comment</i></span class='valign-center'>Add Comment</button></div>");
+      // Construct html to display the article information on the page
+      $("#scraped-articles").prepend("<div class='result-div'><p class='result-text'><a href='" + data[i].link + "' target='_blank'>" + data[i].title + "</a></p>" + "<p>" + data[i].summary + "</p><button class='create-note btn waves-effect waves-light green darken-1 hvr-icon-bob hvr-sweep-to-top' data-id='" + data[i]._id + "'><i class='material-icons left valign-center hvr-icon'>add_comment</i>Add Comment</button></div><hr>");
     }
   });
   
@@ -33,7 +33,7 @@ $(document).ready(function() {
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
 
         // A button to submit a new note, with the id of the article saved to it
-        $("#notes").append("<button class='btn waves-effect waves-light green darken-1' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#notes").append("<button class='btn waves-effect waves-light green darken-1 hvr-sweep-to-top' data-id='" + data._id + "' id='savenote'>Save Note</button>");
   
         // If there's a note in the article
         if (data.note) {

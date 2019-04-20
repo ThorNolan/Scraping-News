@@ -2,13 +2,14 @@
   <nav>
     <div class="nav-wrapper green darken-1">
 
+      <img src="/assets/images/literally-an-onion.png" alt="picture of a yellow onion" style="width: 40px; height: 40px; margin-top: 0.5%; margin-left: 1%; margin-right: 1%">
+
       <div class="brand-logo">  
-        <img src="/assets/images/literal-onion.png" alt="picture of a yellow onion" style="width: 40px; height: 40px;">
         <a href="https://www.theonion.com/" target="_blank">The Onion Scraper</a>
       </div>
 
       <ul class="right">
-        <li><a class="btn waves-effect waves-light black" href="/scrape"><i class="material-icons left">save_alt</i>Scrape New Articles</a></li>
+        <li><a class="btn waves-effect waves-light black hvr-sweep-to-bottom" href="/scrape"><i class="material-icons left">save_alt</i>Scrape New Articles</a></li>
       </ul>
 
     </div>
@@ -17,11 +18,11 @@
 
 <section class="section mainContent">
   <div class="row">  
-    <div class="container col l8 m8 s8">
+    <div class="container col l8 m8 s8 articleSection" style="margin-left: 5%">
         <div id="scraped-articles"></div>
     </div>
-    <div class="container col l4 m4 s4">
-        <div id="notes" class="right"></div>
+    <div class="container col l4 m4 s4 commentSection" style="right: 5%">
+        <div id="notes"></div>
     </div>
   </div>
 </section>
