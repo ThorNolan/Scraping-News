@@ -1,12 +1,20 @@
 Scraping News
 =============================================
-
+This app allows users to view and comment on news articles from [The Onion](https://www.theonion.com/) (America's Finest News Source). It utilizes the NPM packages Cheerio and Mongoose to scrape breaking (fake) news from The Onion and render it to the page from my Node server using Express routing. Data is stored in a MongoDB database, so all user comments are visible on each article and stored permanently until deleted! 
 
 ![demo gif](INSERT DEMO GIF HERE "Demo gif of the news scraper")
 
 ## 🔑 How to Use the App:
 
+This app is very straightforward to use and requires little explanation.
 
++ Press the "Scrape News" button in the navbar to get new articles rendered to the page. 
+  
++ Press the "Add Comment" button to add a comment to a specific article.
+
++ Press the "Delete Comment" button to delete a comment from the article and database.
+   
++ That's it! Enjoy.
 
 ## 📁 Deployment Instructions
 
@@ -44,9 +52,6 @@ This app has been deployed to Heroku, and the link can be found [here](DEPLOYED 
   
 + **Heroku** for live deployment and hosting.
 
-## 🌟 Acknowledgements
-
-    
 ## 🌌 Author 
 
 Thor Nolan—https://github.com/ThorNolan

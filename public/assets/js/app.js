@@ -7,7 +7,7 @@ $(document).ready(function() {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Construct html to display the article information on the page
-      $("#scraped-articles").prepend("<div class='result-div'><p class='result-text'><a href='" + data[i].link + "' target='_blank'>" + data[i].title + "</a></p>" + "<p>" + data[i].summary + "</p><button class='create-note btn waves-effect waves-light green darken-1 hvr-icon-bob hvr-sweep-to-top' data-id='" + data[i]._id + "'><i class='material-icons left valign-center hvr-icon'>add_comment</i>Add Comment</button></div><hr>");
+      $("#scraped-articles").prepend("<div class='result-div'><p class='result-text'><a href='" + data[i].link + "' target='_blank'>" + data[i].title + "</a></p>" + "<p>" + data[i].summary + "</p><button class='create-note btn waves-effect waves-light green darken-1 hvr-icon-bob hvr-sweep-to-top' data-id='" + data[i]._id + "' style='height: 45px'><i class='material-icons left valign-center hvr-icon'>add_comment</i>Add Comment</button></div><hr>");
     }
   });
   
