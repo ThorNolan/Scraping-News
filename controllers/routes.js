@@ -112,7 +112,19 @@ const router = express.Router();
     });
   });
 
-  router.delete("arcticles/:id/:noteid", function (req, res) {
+  // Route for getting all notes for a particular article and returning them to the browser to display
+  router.get("/notes/:id", (req, res) => {
+    db.Note.findById({ _id: req.params.id })
+    .then(function(dbNote) {
+      res.json(dbNote)
+    })
+    .catch(function(err) {
+      res.json(err);
+    });
+  })
+
+  // Route for deleting an existing note
+  router.delete("articles/:id/:noteid", (req, res) => {
       db.Note.findByIdAndRemove(req.params.noteid, function(error, doc) {
           if (error) {
               console.log(error);
@@ -126,7 +138,7 @@ const router = express.Router();
               })
               .exec(function (err, doc) {
                   if (err) {
-                      console.log(err);
+                    console.log(err);
                   }
               });
           };

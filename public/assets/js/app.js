@@ -7,7 +7,7 @@ $(document).ready(function() {
     // For each one
     for (var i = 0; i < data.length; i++) {
       // Construct html to display the article information on the page
-      $("#scraped-articles").prepend("<div class='result-div'><p class='result-text'><a href='" + data[i].link + "' target='_blank'>" + data[i].title + "</a></p>" + "<p>" + data[i].summary + "</p><button class='create-note btn waves-effect waves-light green darken-1 hvr-icon-bob hvr-sweep-to-top' data-id='" + data[i]._id + "' style='height: 45px'><i class='material-icons left valign-center hvr-icon'>add_comment</i>Add Comment</button></div><hr>");
+      $("#scraped-articles").prepend("<div class='result-div'><p class='result-text'><a href='" + data[i].link + "' target='_blank'>" + data[i].title + "</a></p>" + "<p>" + data[i].summary + "</p><button class='create-note btn waves-effect waves-light green darken-1 hvr-icon-bob hvr-sweep-to-top' data-id='" + data[i]._id + "' style='height: 45px;margin-right: 20px; margin-bottom: 10px;'><i class='material-icons left valign-center hvr-icon'>add_comment</i>Add Comment</button><button class='view-notes btn waves-effect waves-light green darken-1 hvr-icon-bob hvr-sweep-to-top' data-id='" + data[i]._id + "' style='height: 45px; margin-bottom: 10px;'><i class='material-icons left valign-center hvr-icon'>comment</i>View Comments</button></div><hr>");
     }
   });
   
@@ -15,6 +15,7 @@ $(document).ready(function() {
   $(document).on("click", ".create-note", function() {
     // Empty the notes from the note section
     $("#notes").empty();
+
     // Save the id from the p tag
     var thisId = $(this).attr("data-id");
   
@@ -33,24 +34,35 @@ $(document).ready(function() {
         // The summary of the article
         $("#notes").append("<p>" + data.summary + "</p>")
 
-        // Area for displaying notes with a button for deleting them
-        $("#notes").append("<p id='noteArea'></p>")
-
         // A textarea to add a new note body
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
 
         // A button to submit a new note, with the id of the article saved to it
-        $("#notes").append("<button class='btn waves-effect waves-light green darken-1 hvr-sweep-to-top' data-id='" + data._id + "' id='savenote'>Save Note</button>");
+        $("#notes").append("<button class='btn waves-effect waves-light green darken-1 hvr-sweep-to-top' data-id='" + data._id + "' id='savenote'>Save Comment</button>");
   
-        // If there's a note in the article
-        if (data.note) {
-          // Place the body of the note in the body textarea
-          $("#noteArea").text(data.note.body);
-          $("#noteArea").append("<button id='delete-note' class='btn btn-small waves-effect waves-light'>X</button>")
-        }
       });
   });
+
+  // Event handler for view comments button
+  $(document).on("click", ".view-notes", function() {
+    // Empty the notes from the note section
+    $("#notes").empty();
+
+    // Save the id from the particular button that was clicked
+    var thisId = $(this).attr("data-id");
   
+    // Make an ajax call for the Notes
+    $.ajax({
+      method: "GET",
+      url: "/notes/" + thisId
+    })
+      // With that done, add the note information to the page
+      .then(function(data) {
+        // The title of the article
+        $("#notes").append("<p>" + data.body + "</p>");
+      });
+  }); 
+
   // When you click the savenote button
   $(document).on("click", "#savenote", function() {
     // Grab the id associated with the article from the submit button
@@ -70,11 +82,11 @@ $(document).ready(function() {
         // Log the response
         console.log(data);
         // Empty the notes section
-        $("#notes").empty();
+        //$("#notes").empty();
+        location.reload();
       });
   
     // Also, remove the values entered in the input and textarea for note entry
-    $("#titleinput").val("");
     $("#bodyinput").val("");
   });
 });

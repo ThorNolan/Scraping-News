@@ -24,6 +24,17 @@ hr {
     margin-left: 0;
 }
 
+img.signin-bg {
+    min-height: 100%;
+    min-width: 1024px;
+    width: 100%;
+    height: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -2;
+}
+
 /* Icon Bob effect from Hover.css */
 @-webkit-keyframes hvr-icon-bob {
     0% {
