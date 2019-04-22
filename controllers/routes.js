@@ -114,9 +114,11 @@ const router = express.Router();
 
   // Route for getting all notes for a particular article and returning them to the browser to display
   router.get("/notes/:id", (req, res) => {
-    db.Note.findById({ _id: req.params.id })
-    .then(function(dbNote) {
-      res.json(dbNote)
+    db.Article.findById({ _id: req.params.id })
+    .populate("note")
+    .then(function(dbArticle) {
+      // Return the article as a json object, the notes can be accessed through data.note.body  
+      res.json(dbArticle)
     })
     .catch(function(err) {
       res.json(err);
@@ -129,7 +131,7 @@ const router = express.Router();
           if (error) {
               console.log(error);
           } else {
-              db.Note.findOneAndUpdate({
+              db.Article.findOneAndUpdate({
                 _id: req.params.id
               }, {
                  $pull: {

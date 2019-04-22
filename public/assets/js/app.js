@@ -1,4 +1,4 @@
-//======= CLIENT-SIDE JAVASCRIPT =============================================================================
+//======= CLIENT-SIDE SCRIPT/ EVENT HANDLERS =============================================================================
 
 $(document).ready(function() {
 
@@ -32,7 +32,7 @@ $(document).ready(function() {
         $("#notes").append("<h2>" + data.title + "</h2>");
 
         // The summary of the article
-        $("#notes").append("<p>" + data.summary + "</p>")
+        $("#notes").append("<p>" + data.summary + "</p>");
 
         // A textarea to add a new note body
         $("#notes").append("<textarea id='bodyinput' name='body'></textarea>");
@@ -58,12 +58,22 @@ $(document).ready(function() {
     })
       // With that done, add the note information to the page
       .then(function(data) {
+        console.log(data)
+
         // The title of the article
-        $("#notes").append("<p>" + data.body + "</p>");
+        $("#notes").append("<h2>" + data.title + "</h2>");
+
+        // The summary of the article
+        $("#notes").append("<p>" + data.summary + "</p>");
+
+        // Loop through notes for this article and append them all to the page
+        for (var i=0; i < data.note.length; i++) {
+          $("#notes").append("<p>" + data.note[i].body + "</p><button class='btn btn-small waves-effect waves-light green darken-1 hvr-sweep-to-top' data-id='" + data._id + "' id='delete'>X</button>");
+        }
       });
   }); 
 
-  // When you click the savenote button
+  // Event handler for add comment button
   $(document).on("click", "#savenote", function() {
     // Grab the id associated with the article from the submit button
     var thisId = $(this).attr("data-id");
@@ -81,12 +91,27 @@ $(document).ready(function() {
       .then(function(data) {
         // Log the response
         console.log(data);
-        // Empty the notes section
-        //$("#notes").empty();
+    
         location.reload();
       });
   
-    // Also, remove the values entered in the input and textarea for note entry
+    // Also, remove the values entered in the textarea for note entry
     $("#bodyinput").val("");
+  });
+
+  // Event handler for delete comment button
+  $(document).on("click", "#delete", function() {
+
+    // Grab the note id from the button that was clicked
+    var thisId = $(this).attr("data-id");
+
+    // Make an ajax call to hit the delete comment route
+    $.ajax({
+      method: "DELETE",
+      url: "/articles/" + thisId 
+    })
+    .then(function() {
+      location.reload();
+    })
   });
 });
